@@ -27,7 +27,6 @@ export default function SignupPage() {
             
         } catch (error:any) {
             console.log("Signup failed", error.message);
-            
             toast.error(error.message);
         }finally {
             setLoading(false);

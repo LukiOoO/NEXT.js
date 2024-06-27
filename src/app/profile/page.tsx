@@ -22,9 +22,23 @@ export default function ProfilePage() {
     }
 
     const getUserDetails = async () => {
-        const res = await axios.get('/api/users/me')
+        const res = await axios.get('/api/users/me');
         console.log(res.data);
-        setData(res.data.data._id)
+        setData(res.data.data._id);
+    }
+
+    const sendEmailToResetPassword = async () => {
+        try{
+            const idRes = await axios.get('/api/users/me');
+            const userId = idRes.data.data._id;
+            await axios.post('/api/users/sendemailtoresetpass', { userId: userId });
+            router.push('/login');
+            toast.success('Email sent successfully');
+        }catch(error:any){
+            console.log(error.message);
+            toast.error(error.message)
+            
+        }
     }
 
     return(
@@ -49,6 +63,12 @@ export default function ProfilePage() {
             font-bold py-2 px-4 rounded"
             onClick={getUserDetails}
             >Get User Details</button>
+            <hr />
+            <button
+            className="bg-yellow-500 mt-4 hover:bg-yellow-700 text-white
+            font-bold py-2 px-4 rounded"
+            onClick={sendEmailToResetPassword}
+            >Send email to reset password</button>
         </div>
     )
 
